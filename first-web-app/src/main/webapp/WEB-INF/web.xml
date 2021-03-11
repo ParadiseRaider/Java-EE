@@ -7,7 +7,7 @@
     <display-name>First Java EE Web Application</display-name>
     <servlet>
         <servlet-name>FirstServlet</servlet-name>
-        <servlet-class></servlet-class>
+        <servlet-class>ru.geek.FirstServlet</servlet-class>
     </servlet>
     
     <servlet-mapping>
