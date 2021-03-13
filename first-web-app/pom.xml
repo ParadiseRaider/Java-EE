@@ -33,4 +33,20 @@
             <version>1.7.30</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>first-web-app</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>2.0.2.Final</version>
+                <configuration>
+                    <hostname>194.67.111.204</hostname>
+                    <username>admin</username>
+                    <password>123</password>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
