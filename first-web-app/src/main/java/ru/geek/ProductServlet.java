@@ -12,11 +12,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @WebServlet(urlPatterns = "/product/*")
 public class ProductServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(ProductServlet.class);
 
+    private static final Pattern pathParam = Pattern.compile("\\/(\\d*)$");
     private ProductRepository productRepository;
 
     @Override
@@ -45,11 +48,23 @@ public class ProductServlet extends HttpServlet {
             }
             resp.getWriter().println("</table>");
         } else {
-            long id = Long.parseLong(req.getPathInfo().substring(1));
-            resp.getWriter().println("<p>Product info</p>");
-            resp.getWriter().println("<p>Name: " + productRepository.findById(id).getName() + "</p>");
-            resp.getWriter().println("<p>Description: " + productRepository.findById(id).getDescription() + "</p>");
-            resp.getWriter().println("<p>Price: " + productRepository.findById(id).getPrice() + "</p>");
+            Matcher matcher = pathParam.matcher(req.getPathInfo());
+            if (matcher.matches()) {
+                long id;
+                try {
+                    id = Long.parseLong(matcher.group(1));
+                } catch (NumberFormatException ex) {
+                    resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    return;
+                }
+                Product product = productRepository.findById(id);
+                resp.getWriter().println("<p>Product info</p>");
+                resp.getWriter().println("<p>Name: " + product.getName() + "</p>");
+                resp.getWriter().println("<p>Description: " + product.getDescription() + "</p>");
+                resp.getWriter().println("<p>Price: " + product.getPrice() + "</p>");
+                return;
+            }
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }
