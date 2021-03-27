@@ -24,7 +24,7 @@
 
                 <div class="form-group">
                     <label>Description</label>
-                    <input value="${requestScope.customer.age}" type="text" class="form-control" id="age" name="age" placeholder="Enter age">
+                    <input value="${requestScope.customer.age}" type="number" class="form-control" id="age" name="age" placeholder="Enter age">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
