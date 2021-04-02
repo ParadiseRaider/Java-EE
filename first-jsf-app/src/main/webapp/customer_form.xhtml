@@ -49,32 +49,23 @@
                     <div class="form-group">
                         <pp:outputLabel value="Name"/>
                         <pp:inputText styleClass="form-control" id="name"
-                                     value="#{productController.product.name}"
+                                     value="#{customerController.customer.name}"
                                      placeholder="Enter name">
                             <f:validateBean/>
                         </pp:inputText>
                         <pp:message for="name" display="icon"/>
                     </div>
                     <div class="form-group">
-                        <pp:outputLabel value="Description"/>
-                        <pp:inputText styleClass="form-control" id="description"
-                                     value="#{productController.product.description}"
-                                     placeholder="Enter description">
+                        <pp:outputLabel value="Age"/>
+                        <pp:inputText styleClass="form-control" p:type="number" id="age"
+                                     value="#{customerController.customer.age}"
+                                     placeholder="Enter age">
                             <f:validateBean/>
                         </pp:inputText>
-                        <pp:message for="description" display="icon"/>
+                        <pp:message for="age" display="icon"/>
                     </div>
-                    <div class="form-group">
-                        <pp:outputLabel value="Price"/>
-                        <pp:inputText styleClass="form-control" p:type="number" id="price"
-                                     value="#{productController.product.price}"
-                                     placeholder="Enter price">
-                            <f:validateBean/>
-                        </pp:inputText>
-                        <pp:message for="price" display="icon"/>
-                    </div>
-                    <pp:commandButton value="Submit" styleClass="btn btn-primary" update="@form"
-                                     action="#{productController.saveProduct()}"/>
+                    <pp:commandButton value="Submit" styleClass="btn btn-primary"
+                                     action="#{customerController.saveCustomer()}"/>
                 </h:form>
             </div>
         </div>

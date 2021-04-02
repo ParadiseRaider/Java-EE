@@ -5,21 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Category {
     private Long id;
 
     @NotNull
     private String name;
-
-    @NotNull
-    private String description;
-
-    @Positive
-    private BigDecimal price;
 }

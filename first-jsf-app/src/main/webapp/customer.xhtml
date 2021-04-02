@@ -1,9 +1,7 @@
 <html lang="en"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:pp="http://primefaces.org/ui"
->
+      xmlns:pp="http://primefaces.org/ui">
 
 <h:head>
     <!-- Required meta tags -->
@@ -18,7 +16,6 @@
 </h:head>
 
 <h:body>
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">EShop</a>
 
@@ -44,40 +41,55 @@
 
     <div class="container">
         <div class="row py-2">
-            <div class="col-12">
-                <h:form>
-                    <div class="form-group">
-                        <pp:outputLabel value="Name"/>
-                        <pp:inputText styleClass="form-control" id="name"
-                                     value="#{productController.product.name}"
-                                     placeholder="Enter name">
-                            <f:validateBean/>
-                        </pp:inputText>
-                        <pp:message for="name" display="icon"/>
-                    </div>
-                    <div class="form-group">
-                        <pp:outputLabel value="Description"/>
-                        <pp:inputText styleClass="form-control" id="description"
-                                     value="#{productController.product.description}"
-                                     placeholder="Enter description">
-                            <f:validateBean/>
-                        </pp:inputText>
-                        <pp:message for="description" display="icon"/>
-                    </div>
-                    <div class="form-group">
-                        <pp:outputLabel value="Price"/>
-                        <pp:inputText styleClass="form-control" p:type="number" id="price"
-                                     value="#{productController.product.price}"
-                                     placeholder="Enter price">
-                            <f:validateBean/>
-                        </pp:inputText>
-                        <pp:message for="price" display="icon"/>
-                    </div>
-                    <pp:commandButton value="Submit" styleClass="btn btn-primary" update="@form"
-                                     action="#{productController.saveProduct()}"/>
-                </h:form>
-            </div>
+            <h:form id="form">
+                <div class="card crud-demo">
+                    <pp:growl id="messages" showDetail="true"/>
+
+                    <pp:toolbar>
+                        <pp:toolbarGroup>
+                            <pp:commandButton value="New" icon="pi pi-plus" action="#{customerController.addCustomer()}"
+                                              styleClass="btn btn-success" style="margin-right: .5rem">
+                            </pp:commandButton>
+                        </pp:toolbarGroup>
+                    </pp:toolbar>
+
+                    <pp:dataTable id="dt-products" widgetVar="dtProducts" var="customer" value="#{customerController.findAll()}"
+                                  reflow="true" styleClass="products-table">
+                        <f:facet name="header">
+                            <div class="products-table-header">
+                                <span style="font-weight: bold">CUSTOMERS</span>
+
+                                <span class="filter-container ui-input-icon-left">
+                                </span>
+                            </div>
+                        </f:facet>
+
+                        <pp:column headerText="Id">
+                            <h:outputText value="#{customer.id}"/>
+                        </pp:column>
+                        <pp:column headerText="Name">
+                            <h:outputText value="#{customer.name}"/>
+                        </pp:column>
+                        <pp:column headerText="Age">
+                            <h:outputText value="#{customer.age}" style="font-weight: 700"/>
+                        </pp:column>
+
+                        <pp:column exportable="false">
+                            <pp:commandButton icon="pi pi-pencil" action="#{customerController.editCustomer(customer)}"
+                                              styleClass="btn btn-success">
+                            </pp:commandButton>
+                            <pp:commandButton id="display" styleClass="btn btn-danger" icon="pi pi-trash"
+                                              action="#{customerController.deleteCustomer(customer)}">
+                                <pp:ajax event="click" update="display" process="@this"/>
+                            </pp:commandButton>
+                        </pp:column>
+
+                    </pp:dataTable>
+
+                </div>
+            </h:form>
         </div>
+
     </div>
 
     <!-- Optional JavaScript -->
@@ -91,7 +103,5 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
-
 </h:body>
-
 </html>
