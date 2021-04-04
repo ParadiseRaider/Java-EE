@@ -1,5 +1,7 @@
 package ru.geek.controller;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.geek.persist.Product;
 import ru.geek.persist.ProductRepository;
 
@@ -16,15 +18,9 @@ public class ProductController implements Serializable {
     @Inject
     private ProductRepository productRepository;
 
+    @Getter
+    @Setter
     private Product product;
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
 
     public List<Product> findAll() {
         return productRepository.findAll();

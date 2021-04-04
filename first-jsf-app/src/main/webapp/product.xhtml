@@ -16,7 +16,6 @@
 </h:head>
 
 <h:body>
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">EShop</a>
 
@@ -30,48 +29,67 @@
                 <li class="nav-item active">
                     <h:link styleClass="nav-link" value="Product" outcome="/product"/>
                 </li>
+                <li class="nav-item active">
+                    <h:link styleClass="nav-link" value="Category" outcome="/category"/>
+                </li>
+                <li class="nav-item active">
+                    <h:link styleClass="nav-link" value="Customer" outcome="/customer"/>
+                </li>
             </ul>
         </div>
     </nav>
 
     <div class="container">
         <div class="row py-2">
-            <h:form id="productTableForm">
-                <div class="col-12">
-                    <h:commandButton value="Add Product" styleClass="btn btn-success"
-                                     action="#{productController.addProduct()}"/>
-                </div>
+            <h:form id="form">
+                <div class="card crud-demo">
+                    <pp:growl id="messages" showDetail="true"/>
 
-                <div class="col-12">
-                    <h:dataTable value="#{productController.findAll()}" var="product"
-                                 styleClass="table table-bordered my-2">
-                        <h:column>
-                            <f:facet name="header">Id</f:facet>
-                            #{product.id}
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Name</f:facet>
-                            #{product.name}
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Description</f:facet>
-                            #{product.description}
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Price</f:facet>
-                            #{product.price}
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Actions</f:facet>
+                    <pp:toolbar>
+                        <pp:toolbarGroup>
+                            <pp:commandButton value="New" icon="pi pi-plus" action="#{productController.addProduct()}"
+                                              styleClass="btn btn-success" style="margin-right: .5rem">
+                            </pp:commandButton>
+                        </pp:toolbarGroup>
+                    </pp:toolbar>
 
-                            <h:commandButton value="Edit" styleClass="btn btn-success"
-                                              action="#{productController.editProduct(product)}"/>
-                            <h:commandButton value="Delete" styleClass="btn btn-danger"
+                    <pp:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{productController.findAll()}"
+                                  reflow="true" styleClass="products-table">
+                        <f:facet name="header">
+                            <div class="products-table-header">
+                                <span style="font-weight: bold">PRODUCTS</span>
+
+                                <span class="filter-container ui-input-icon-left">
+                                </span>
+                            </div>
+                        </f:facet>
+
+                        <pp:column headerText="Id">
+                            <h:outputText value="#{product.id}"/>
+                        </pp:column>
+                        <pp:column headerText="Name">
+                            <h:outputText value="#{product.name}"/>
+                        </pp:column>
+                        <pp:column headerText="Description">
+                            <h:outputText value="#{product.description}"/>
+                        </pp:column>
+                        <pp:column headerText="Price">
+                            <h:outputText value="#{product.price}" style="font-weight: 700">
+                                <f:convertNumber currencySymbol="$" type="currency"/>
+                            </h:outputText>
+                        </pp:column>
+
+                        <pp:column exportable="false">
+                            <pp:commandButton icon="pi pi-pencil" action="#{productController.editProduct(product)}"
+                                              styleClass="btn btn-success">
+                            </pp:commandButton>
+                            <pp:commandButton id="display" styleClass="btn btn-danger" icon="pi pi-trash"
                                               action="#{productController.deleteProduct(product)}">
-                                <f:ajax event="click" render="productTableForm"/>
-                            </h:commandButton>
-                        </h:column>
-                    </h:dataTable>
+                                <pp:ajax event="click" update="display" process="@this"/>
+                            </pp:commandButton>
+                        </pp:column>
+
+                    </pp:dataTable>
 
                 </div>
             </h:form>
