@@ -1,36 +1,53 @@
 package ru.geek.persist;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+import javax.transaction.UserTransaction;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @ApplicationScoped
 @Named
 public class CustomerRepository {
-    private final Map<Long, Customer> customerMap = new ConcurrentHashMap<>();
 
-    private final AtomicLong identity = new AtomicLong(0);
+    @PersistenceContext(unitName = "ds")
+    private EntityManager em;
 
-    public void save(Customer customer) {
-        if (customer.getId() == null) {
-            customer.setId(identity.incrementAndGet());
-        }
-        customerMap.put(customer.getId(), customer);
+    @Resource
+    private UserTransaction ut;
+
+    @PostConstruct
+    public void init() {
     }
 
+    @Transactional
+    public void save(Customer customer) {
+        if (customer.getId() == null) {
+            em.persist(customer);
+        }
+        em.merge(customer);
+    }
+
+    @Transactional
     public void delete(Long id) {
-        customerMap.remove(id);
+        em.createNamedQuery("deleteCustomerById")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     public Customer findById(Long id) {
-        return customerMap.get(id);
+        return em.find(Customer.class, id);
     }
 
     public List<Customer> findAll() {
-        return new ArrayList<>(customerMap.values());
+        return em.createNamedQuery("findAllCustomer", Customer.class).getResultList();
+    }
+
+    public long count() {
+        return em.createNamedQuery("countCustomer", Long.class).getSingleResult();
     }
 }
