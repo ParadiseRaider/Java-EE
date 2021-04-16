@@ -1,53 +1,16 @@
 package ru.geek.persist;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.*;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
-@ApplicationScoped
-@Named
+@Stateless
 public class ProductRepository {
 
     @PersistenceContext(unitName = "ds")
     private EntityManager em;
 
-    @Resource
-    private UserTransaction ut;
-
-    @PostConstruct
-    public void init() {
-        if (count()==0) {
-            try {
-                ut.begin();
-                save(new Product(null, "Product 1", "Description 1", new BigDecimal(100)));
-                save(new Product(null, "Product 2", "Description 2", new BigDecimal(200)));
-                save(new Product(null, "Product 3", "Description 3", new BigDecimal(300)));
-                save(new Product(null, "Продукт 4", "Description 4", new BigDecimal(300)));
-                ut.commit();
-            } catch (Exception e) {
-                e.printStackTrace();
-                try {
-                    ut.rollback();
-                } catch (SystemException systemException) {
-                    systemException.printStackTrace();
-                    throw new RuntimeException(systemException);
-                }
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    @Transactional
     public void save(Product product) {
         if (product.getId() == null) {
             em.persist(product);
@@ -55,7 +18,6 @@ public class ProductRepository {
         em.merge(product);
     }
 
-    @Transactional
     public void delete(Long id) {
         em.createNamedQuery("deleteProductById")
                 .setParameter("id",id)
@@ -68,6 +30,11 @@ public class ProductRepository {
 
     public List<Product> findAll() {
         return em.createNamedQuery("findAllProduct", Product.class).getResultList();
+    }
+
+    public List<Product> findAllWithCategoryFetch() {
+        return em.createNamedQuery("findAllWithCategoryFetch", Product.class)
+                .getResultList();
     }
 
     public long count() {

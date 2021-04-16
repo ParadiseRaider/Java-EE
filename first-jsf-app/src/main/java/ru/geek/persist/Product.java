@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 @NamedQueries({
         @NamedQuery(name = "deleteProductById", query = "delete from Product p where p.id = :id"),
         @NamedQuery(name = "findAllProduct", query = "from Product p"),
+        @NamedQuery(name = "findAllWithCategoryFetch", query = "select p from Product p left join fetch p.category"),
         @NamedQuery(name = "countProduct", query = "select count(p) from Product p")
 })
 public class Product {
@@ -36,4 +37,8 @@ public class Product {
     @Column
     @Positive
     private BigDecimal price;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

@@ -5,8 +5,9 @@ import lombok.Setter;
 import ru.geek.persist.Category;
 import ru.geek.persist.CategoryRepository;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
+import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
@@ -15,15 +16,21 @@ import java.util.List;
 @Named
 public class CategoryController implements Serializable {
 
-    @Inject
+    @EJB
     private CategoryRepository categoryRepository;
 
     @Getter
     @Setter
     private Category category;
 
+    private List<Category> categoryList;
+
+    public void preloadData(ComponentSystemEvent componentSystemEvent) {
+        this.categoryList = categoryRepository.findAll();
+    }
+
     public List<Category> findAll() {
-        return categoryRepository.findAll();
+        return categoryList;
     }
 
     public String editCategory(Category category) {
