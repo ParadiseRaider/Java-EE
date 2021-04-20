@@ -5,8 +5,9 @@ import lombok.Setter;
 import ru.geek.persist.Customer;
 import ru.geek.persist.CustomerRepository;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
+import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
@@ -15,15 +16,21 @@ import java.util.List;
 @Named
 public class CustomerController implements Serializable {
 
-    @Inject
+    @EJB
     private CustomerRepository customerRepository;
 
     @Getter
     @Setter
     private Customer customer;
 
+    private List<Customer> customerList;
+
+    public void preloadData(ComponentSystemEvent componentSystemEvent) {
+        this.customerList = customerRepository.findAll();
+    }
+
     public List<Customer> findAll() {
-        return customerRepository.findAll();
+        return customerList;
     }
 
     public String editCustomer(Customer customer) {

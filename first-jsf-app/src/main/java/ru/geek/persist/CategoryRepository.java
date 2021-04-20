@@ -1,30 +1,19 @@
 package ru.geek.persist;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-import javax.transaction.UserTransaction;
 import java.util.List;
 
-@ApplicationScoped
-@Named
+@Stateless
 public class CategoryRepository {
 
     @PersistenceContext(unitName = "ds")
     private EntityManager em;
 
-    @Resource
-    private UserTransaction ut;
 
-    @PostConstruct
-    public void init() {
-    }
-
-    @Transactional
+    @TransactionAttribute
     public void save(Category category) {
         if (category.getId() == null) {
             em.persist(category);
@@ -32,7 +21,7 @@ public class CategoryRepository {
         em.merge(category);
     }
 
-    @Transactional
+    @TransactionAttribute
     public void delete(Long id) {
         em.createNamedQuery("deleteCategoryById")
                 .setParameter("id", id)
@@ -41,6 +30,10 @@ public class CategoryRepository {
 
     public Category findById(Long id) {
         return em.find(Category.class, id);
+    }
+
+    public Category getReference(Long id) {
+        return em.getReference(Category.class, id);
     }
 
     public List<Category> findAll() {

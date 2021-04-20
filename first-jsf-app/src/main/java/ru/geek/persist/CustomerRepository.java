@@ -1,30 +1,18 @@
 package ru.geek.persist;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-import javax.transaction.UserTransaction;
 import java.util.List;
 
-@ApplicationScoped
-@Named
+@Stateless
 public class CustomerRepository {
 
     @PersistenceContext(unitName = "ds")
     private EntityManager em;
 
-    @Resource
-    private UserTransaction ut;
-
-    @PostConstruct
-    public void init() {
-    }
-
-    @Transactional
+    @TransactionAttribute
     public void save(Customer customer) {
         if (customer.getId() == null) {
             em.persist(customer);
@@ -32,7 +20,7 @@ public class CustomerRepository {
         em.merge(customer);
     }
 
-    @Transactional
+    @TransactionAttribute
     public void delete(Long id) {
         em.createNamedQuery("deleteCustomerById")
                 .setParameter("id", id)

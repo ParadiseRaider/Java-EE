@@ -17,10 +17,9 @@
 </h:head>
 
 <h:body>
-    <f:event listener="#{productController.preloadData}" type="preRenderView"/>
 
     <ui:include src="WEB-INF/fragments/header.xhtml">
-        <ui:param name="pageName" value="Product"/>
+        <ui:param name="pageName" value="Cart"/>
     </ui:include>
 
     <div class="container">
@@ -29,19 +28,11 @@
                 <div class="card crud-demo">
                     <pp:growl id="messages" showDetail="true"/>
 
-                    <pp:toolbar>
-                        <pp:toolbarGroup>
-                            <pp:commandButton value="New" icon="pi pi-plus" action="#{productController.addProduct()}"
-                                              styleClass="btn btn-success" style="margin-right: .5rem">
-                            </pp:commandButton>
-                        </pp:toolbarGroup>
-                    </pp:toolbar>
-
-                    <pp:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{productController.findAll()}"
+                    <pp:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{cartController.findAll()}"
                                   reflow="true" styleClass="products-table">
                         <f:facet name="header">
                             <div class="products-table-header">
-                                <span style="font-weight: bold">PRODUCTS</span>
+                                <span style="font-weight: bold">CART</span>
 
                                 <span class="filter-container ui-input-icon-left">
                                 </span>
@@ -67,16 +58,9 @@
                         </pp:column>
 
                         <pp:column exportable="false">
-                            <pp:commandButton icon="pi pi-pencil" action="#{productController.editProduct(product)}"
-                                              styleClass="btn btn-success">
-                            </pp:commandButton>
                             <pp:commandButton id="display" styleClass="btn btn-danger" icon="pi pi-trash"
-                                              action="#{productController.deleteProduct(product)}">
+                                              action="#{cartController.remove(product)}">
                                 <pp:ajax event="click" update="display" process="@this"/>
-                            </pp:commandButton>
-                            <pp:commandButton id="cart" styleClass="btn btn-success" icon="pi pi-shopping-cart"
-                                              action="#{cartController.add(product)}">
-                                <pp:ajax event="click"/>
                             </pp:commandButton>
                         </pp:column>
 
