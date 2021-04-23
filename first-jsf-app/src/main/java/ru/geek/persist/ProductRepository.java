@@ -28,6 +28,18 @@ public class ProductRepository {
         return em.find(Product.class, id);
     }
 
+    public Product findByName(String name) {
+        return em.createNamedQuery("findByProductName", Product.class)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
+
+    public List<Product> findAllProductWithCategoryId(Long id) {
+        return em.createNamedQuery("findAllProductWithCategoryId", Product.class)
+                .setParameter("id", id)
+                .getResultList();
+    }
+
     public List<Product> findAll() {
         return em.createNamedQuery("findAllProduct", Product.class).getResultList();
     }

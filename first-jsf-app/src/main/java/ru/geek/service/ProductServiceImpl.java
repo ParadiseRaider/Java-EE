@@ -1,8 +1,10 @@
 package ru.geek.service;
 
+import ru.geek.persist.Category;
 import ru.geek.persist.CategoryRepository;
 import ru.geek.persist.Product;
 import ru.geek.persist.ProductRepository;
+import ru.geek.rest.ProductResource;
 import ru.geek.service.dto.ProductDto;
 
 import javax.ejb.EJB;
@@ -14,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Stateless
 @Remote(ProductServiceRemote.class)
-public class ProductServiceImpl implements ProductService, ProductServiceRemote {
+public class ProductServiceImpl implements ProductService, ProductServiceRemote, ProductResource {
 
     @EJB
     private ProductRepository productRepository;
@@ -80,5 +82,41 @@ public class ProductServiceImpl implements ProductService, ProductServiceRemote 
                 product.getDescription(), product.getPrice(),
                 null, null
         );
+    }
+
+    @Override
+    public void insert(ProductDto productDto) {
+        if (productDto.getId()!=null) {
+            throw new IllegalArgumentException("Not null id in the inserted Product");
+        }
+        save(productDto);
+    }
+
+    @Override
+    public void update(ProductDto productDto) {
+        if (productDto.getId()==null) {
+            throw new IllegalArgumentException("Null id in the inserted Product");
+        }
+        save(productDto);
+    }
+
+    @Override
+    public void addCategory(Category category) {
+        if (category.getId()!=null) {
+            throw new IllegalArgumentException("Not null id in the inserted Category");
+        }
+        categoryRepository.save(category);
+    }
+
+    @Override
+    public ProductDto findByName(String name) {
+        return createProductDtoWithCategory(productRepository.findByName(name));
+    }
+
+    @Override
+    public List<ProductDto> findAllProductWithCategoryId(Long id) {
+        return productRepository.findAllProductWithCategoryId(id).stream()
+                .map(ProductServiceImpl::createProductDtoWithCategory)
+                .collect(Collectors.toList());
     }
 }
