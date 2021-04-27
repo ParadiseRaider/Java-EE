@@ -1,0 +1,51 @@
+GET http://194.67.111.204:8080/first-jsf-app/api/v1/product
+
+###
+
+GET http://194.67.111.204:8080/first-jsf-app/api/v1/product/5
+
+###
+
+GET http://194.67.111.204:8080/first-jsf-app/api/v1/product/name/Продукт 4
+
+###
+
+GET http://194.67.111.204:8080/first-jsf-app/api/v1/product/category/3
+
+###
+
+POST  http://194.67.111.204:8080/first-jsf-app/api/v1/product/category
+Content-Type: application/json
+
+{
+  "name": "Rest Category"
+}
+
+###
+
+POST  http://194.67.111.204:8080/first-jsf-app/api/v1/product
+Content-Type: application/json
+
+{
+  "description": "REST",
+  "name": "Product REST",
+  "price": 111.00,
+  "categoryId": 8
+}
+
+###
+
+PUT http://194.67.111.204:8080/first-jsf-app/api/v1/product
+Content-Type: application/json
+
+{
+  "id": 5,
+  "description": "Description 2222",
+  "name": "Product REST 2222",
+  "price": 102.00,
+  "categoryId": 1
+}
+
+###
+
+DELETE http://194.67.111.204:8080/first-jsf-app/api/v1/product/6
