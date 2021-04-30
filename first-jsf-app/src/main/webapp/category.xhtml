@@ -32,7 +32,7 @@
                     <pp:toolbar>
                         <pp:toolbarGroup>
                             <pp:commandButton value="New" icon="pi pi-plus" action="#{categoryController.addCategory()}"
-                                              styleClass="btn btn-success" style="margin-right: .5rem">
+                                              styleClass="btn btn-success" style="margin-right: .5rem" rendered="#{request.isUserInRole('ADMIN')}">
                             </pp:commandButton>
                         </pp:toolbarGroup>
                     </pp:toolbar>
@@ -57,10 +57,10 @@
 
                         <pp:column exportable="false">
                             <pp:commandButton icon="pi pi-pencil" action="#{categoryController.editCategory(category)}"
-                                              styleClass="btn btn-success">
+                                              styleClass="btn btn-success" rendered="#{request.isUserInRole('ADMIN')}">
                             </pp:commandButton>
                             <pp:commandButton id="display" styleClass="btn btn-danger" icon="pi pi-trash"
-                                              action="#{categoryController.deleteCategory(category)}">
+                                              action="#{categoryController.deleteCategory(category)}" rendered="#{request.isUserInRole('ADMIN')}">
                                 <pp:ajax event="click" update="display" process="@this"/>
                             </pp:commandButton>
                         </pp:column>

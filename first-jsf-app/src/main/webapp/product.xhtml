@@ -32,7 +32,7 @@
                     <pp:toolbar>
                         <pp:toolbarGroup>
                             <pp:commandButton value="New" icon="pi pi-plus" action="#{productController.addProduct()}"
-                                              styleClass="btn btn-success" style="margin-right: .5rem">
+                                              styleClass="btn btn-success" style="margin-right: .5rem" rendered="#{request.isUserInRole('ADMIN')}">
                             </pp:commandButton>
                         </pp:toolbarGroup>
                     </pp:toolbar>
@@ -68,10 +68,10 @@
 
                         <pp:column exportable="false">
                             <pp:commandButton icon="pi pi-pencil" action="#{productController.editProduct(product)}"
-                                              styleClass="btn btn-success">
+                                              styleClass="btn btn-success" rendered="#{request.isUserInRole('ADMIN')}">
                             </pp:commandButton>
                             <pp:commandButton id="display" styleClass="btn btn-danger" icon="pi pi-trash"
-                                              action="#{productController.deleteProduct(product)}">
+                                              action="#{productController.deleteProduct(product)}" rendered="#{request.isUserInRole('ADMIN')}">
                                 <pp:ajax event="click" update="display" process="@this"/>
                             </pp:commandButton>
                             <pp:commandButton id="cart" styleClass="btn btn-success" icon="pi pi-shopping-cart"
