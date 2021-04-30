@@ -1,0 +1,92 @@
+<html lang="en"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pp="http://primefaces.org/ui">
+
+<h:head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>
+  <title>EShop application</title>
+</h:head>
+
+<h:body>
+  <f:event listener="#{userController.preloadData}" type="preRenderView"/>
+
+  <ui:include src="../WEB-INF/fragments/header.xhtml">
+    <ui:param name="pageName" value="User"/>
+  </ui:include>
+
+  <div class="container">
+    <div class="row py-2">
+      <h:form id="form">
+        <div class="card crud-demo">
+          <pp:growl id="messages" showDetail="true"/>
+
+          <pp:toolbar>
+            <pp:toolbarGroup>
+              <pp:commandButton value="New" icon="pi pi-plus" action="#{userController.addCustomer()}"
+                                styleClass="btn btn-success" style="margin-right: .5rem">
+              </pp:commandButton>
+            </pp:toolbarGroup>
+          </pp:toolbar>
+
+          <pp:dataTable id="dt-products" widgetVar="dtProducts" var="user" value="#{userController.findAll()}"
+                        reflow="true" styleClass="products-table">
+            <f:facet name="header">
+              <div class="products-table-header">
+                <span style="font-weight: bold">USERS</span>
+
+                <span class="filter-container ui-input-icon-left">
+                                </span>
+              </div>
+            </f:facet>
+
+            <pp:column headerText="Id">
+              <h:outputText value="#{user.id}"/>
+            </pp:column>
+            <pp:column headerText="Login">
+              <h:outputText value="#{user.login}"/>
+            </pp:column>
+            <pp:column headerText="Age">
+              <h:outputText value="#{user.age}" style="font-weight: 700">
+              </h:outputText>
+            </pp:column>
+
+            <pp:column exportable="false">
+              <pp:commandButton icon="pi pi-pencil" action="#{userController.editCustomer(user)}"
+                                styleClass="btn btn-success">
+              </pp:commandButton>
+              <pp:commandButton id="display" styleClass="btn btn-danger" icon="pi pi-trash"
+                                action="#{userController.deleteCustomer(user)}">
+                <pp:ajax event="click" update="display" process="@this"/>
+              </pp:commandButton>
+            </pp:column>
+
+          </pp:dataTable>
+
+        </div>
+      </h:form>
+    </div>
+
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+          integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+          crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+          crossorigin="anonymous"></script>
+</h:body>
+</html>

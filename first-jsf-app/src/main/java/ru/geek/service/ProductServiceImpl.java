@@ -7,6 +7,8 @@ import ru.geek.persist.ProductRepository;
 import ru.geek.rest.ProductResource;
 import ru.geek.service.dto.ProductDto;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Stateless
 @Remote(ProductServiceRemote.class)
+@PermitAll
 public class ProductServiceImpl implements ProductService, ProductServiceRemote, ProductResource {
 
     @EJB
@@ -25,6 +28,7 @@ public class ProductServiceImpl implements ProductService, ProductServiceRemote,
     private CategoryRepository categoryRepository;
 
     @Override
+    @RolesAllowed({"ADMIN"})
     @TransactionAttribute
     public void save(ProductDto productDto) {
         productRepository.save(new Product(productDto.getId(),
@@ -35,6 +39,7 @@ public class ProductServiceImpl implements ProductService, ProductServiceRemote,
     }
 
     @Override
+    @RolesAllowed({"ADMIN"})
     @TransactionAttribute
     public void delete(Long id) {
         productRepository.delete(id);

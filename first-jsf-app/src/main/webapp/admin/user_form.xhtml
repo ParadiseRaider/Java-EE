@@ -1,0 +1,82 @@
+<html lang="en"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pp="http://primefaces.org/ui">
+
+<h:head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>
+  <title>EShop application</title>
+</h:head>
+
+<h:body>
+
+  <ui:include src="../WEB-INF/fragments/header.xhtml">
+    <ui:param name="pageName" value="User"/>
+  </ui:include>
+
+  <div class="container">
+    <div class="row py-2">
+      <div class="col-12">
+        <h:form>
+          <div class="form-group">
+            <pp:outputLabel value="Login"/>
+            <pp:inputText styleClass="form-control" id="login"
+                          value="#{userController.user.login}"
+                          placeholder="Enter login">
+              <f:validateBean/>
+            </pp:inputText>
+            <pp:message for="login" display="icon"/>
+          </div>
+          <div class="form-group">
+            <pp:outputLabel value="Password"/>
+            <pp:inputText styleClass="form-control" id="password"
+                          value="#{userController.user.password}"
+                          placeholder="Enter password">
+              <f:validateBean/>
+            </pp:inputText>
+            <pp:message for="password" display="icon"/>
+          </div>
+          <div class="form-group">
+            <pp:outputLabel value="Age"/>
+            <pp:inputText styleClass="form-control" p:type="number" id="age"
+                          value="#{userController.user.age}"
+                          placeholder="Enter age">
+              <f:validateBean/>
+            </pp:inputText>
+            <pp:message for="age" display="icon"/>
+          </div>
+          <div class="form-group">
+            <h:selectManyCheckbox value="#{userController.user.roles}" layout="pageDirection">
+              <f:selectItems value="#{userController.roleList}" />
+            </h:selectManyCheckbox>
+          </div>
+          <pp:commandButton value="Submit" styleClass="btn btn-primary" update="@form"
+                            action="#{userController.saveCustomer()}"/>
+        </h:form>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+          integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+          crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+          crossorigin="anonymous"></script>
+</h:body>
+</html>
